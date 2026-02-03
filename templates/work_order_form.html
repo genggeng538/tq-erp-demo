@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>新增生产工单</h3>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div>关联销售订单：
+    <select name="sales_order_id">
+      {% for so in sales_orders %}
+        <option value="{{ so.id }}">{{ so.so_no }} / {{ so.customer }} / {{ so.dn }}</option>
+      {% endfor %}
+    </select>
+  </div><br/>
+  <div>工序：<input name="process" value="机加工（外协）"></div><br/>
+  <div>状态：
+    <select name="status">
+      <option>待加工</option><option>加工中</option><option>待检验</option><option>已完成</option>
+    </select>
+  </div><br/>
+  <div>检验报告：<input type="file" name="inspect_report"></div><br/>
+  <button type="submit">保存</button>
+</form>
+{% endblock %}
