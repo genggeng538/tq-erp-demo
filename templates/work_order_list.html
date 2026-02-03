@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>生产工单</h3>
+<p><a href="/erp/work/new/">新增工单</a></p>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>关联订单</th><th>规格</th><th>工序</th><th>状态</th><th>检验报告</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ r.sales_order.so_no }}</td>
+    <td>{{ r.sales_order.dn }}</td>
+    <td>{{ r.process }}</td>
+    <td>{{ r.status }}</td>
+    <td>{% if r.inspect_report %}<a href="{{ r.inspect_report.url }}">查看</a>{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
