@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
 
-    pythonVersion: "3.11.9"   # ←【新增这一行，最关键】
+    pythonVersion: "3.11.9"
 
     buildCommand: bash build.sh
     startCommand: gunicorn config.wsgi:application
@@ -12,15 +12,21 @@ services:
     envVars:
       - key: DJANGO_SECRET_KEY
         generateValue: true
+
       - key: DJANGO_DEBUG
         value: "0"
+
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
+
       - key: DATABASE_URL
         sync: false
+
       - key: ADMIN_USER
         value: "admin"
+
       - key: ADMIN_PASSWORD
         value: "123456"
+
       - key: COMPANY_NAME
         value: "常州市彤奇机械有限公司"
