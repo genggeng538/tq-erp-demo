@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>新增销售订单</h3>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <div>订单号：<input name="so_no" placeholder="SO-0002" required></div><br/>
+  <div>客户：<input name="customer" required></div><br/>
+  <div>规格：
+    <select name="dn">
+      <option>DN200</option><option>DN250</option><option>DN300</option>
+    </select>
+  </div><br/>
+  <div>数量：<input name="qty" type="number" value="1" min="1"></div><br/>
+  <div>合同附件：<input type="file" name="contract_file"></div><br/>
+  <div>图纸附件：<input type="file" name="drawing_file"></div><br/>
+  <button type="submit">保存</button>
+</form>
+{% endblock %}
