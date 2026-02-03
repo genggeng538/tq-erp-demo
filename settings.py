@@ -1,3 +1,5 @@
+import dj_database_url
+import os
 from pathlib import Path
 import os
 from urllib.parse import urlparse
@@ -54,19 +56,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if DATABASE_URL:
-    u = urlparse(DATABASE_URL)
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": u.path.lstrip("/"),
-            "USER": u.username,
-            "PASSWORD": u.password,
-            "HOST": u.hostname,
-            "PORT": u.port or 5432,
-        }
-    }
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,
+    )
+}
 else:
     DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
 
