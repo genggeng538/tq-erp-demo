@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ request.site_name|default:"彤奇ERP实验版" }}</title>
+</head>
+<body style="font-family:Arial; margin:24px;">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h2>常州市彤奇机械有限公司 · ERP 实验版</h2>
+    <div>
+      {% if user.is_authenticated %}
+        你好，{{ user.username }} | <a href="/logout/">退出</a>
+      {% endif %}
+    </div>
+  </div>
+  <hr/>
+  {% if user.is_authenticated %}
+  <div style="margin:12px 0;">
+    <a href="/">仪表盘</a> |
+    <a href="/erp/sales/">销售订单</a> |
+    <a href="/erp/work/">生产工单</a> |
+    <a href="/admin/">系统后台</a>
+  </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>
