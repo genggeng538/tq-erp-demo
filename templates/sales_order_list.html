@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>销售订单</h3>
+<p><a href="/erp/sales/new/">新增销售订单</a></p>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>订单号</th><th>客户</th><th>规格</th><th>数量</th><th>合同</th><th>图纸</th><th>创建时间</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td>{{ r.so_no }}</td><td>{{ r.customer }}</td><td>{{ r.dn }}</td><td>{{ r.qty }}</td>
+    <td>{% if r.contract_file %}<a href="{{ r.contract_file.url }}">查看</a>{% endif %}</td>
+    <td>{% if r.drawing_file %}<a href="{{ r.drawing_file.url }}">查看</a>{% endif %}</td>
+    <td>{{ r.created_at }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
