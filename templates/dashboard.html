@@ -1,7 +1,71 @@
 {% extends "base.html" %}
+{% block title %}仪表盘 · {{ COMPANY_NAME|default:"ERP" }}{% endblock %}
+
 {% block content %}
-<h3>仪表盘</h3>
-<p>销售订单：{{ so_count }} 条</p>
-<p>生产工单：{{ wo_count }} 条</p>
-<p>建议你先新增一张 DN250 的销售订单，然后生成工单。</p>
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h1>仪表盘</h1>
+      <p>欢迎回来，{{ request.user.username }}。这里是系统运行概览。</p>
+    </div>
+    <div class="page-actions">
+      <a class="btn btn-ghost" href="/admin/" target="_blank">打开管理后台</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="kpi">
+      <div class="kpi-title">今日访问</div>
+      <div class="kpi-value">{{ stats.visits|default:"-" }}</div>
+      <div class="kpi-sub">可后续接入统计</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-title">订单数</div>
+      <div class="kpi-value">{{ stats.orders|default:"-" }}</div>
+      <div class="kpi-sub">后续接 SalesOrder</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-title">工单数</div>
+      <div class="kpi-value">{{ stats.workorders|default:"-" }}</div>
+      <div class="kpi-sub">后续接 WorkOrder</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-title">库存预警</div>
+      <div class="kpi-value">{{ stats.stock_alerts|default:"-" }}</div>
+      <div class="kpi-sub">后续接库存模块</div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="section-head">
+      <h2>快速入口</h2>
+      <p>按制造业 ERP 的顺序组织（先生产、再采购、再库存）。</p>
+    </div>
+
+    <div class="quick">
+      <a class="quick-item" href="/admin/">
+        <div class="qi-title">管理后台</div>
+        <div class="qi-sub">用户、数据、表管理</div>
+      </a>
+
+      <div class="quick-item disabled">
+        <div class="qi-title">销售订单</div>
+        <div class="qi-sub">下一步我给你接入</div>
+      </div>
+
+      <div class="quick-item disabled">
+        <div class="qi-title">生产工单</div>
+        <div class="qi-sub">下一步我给你接入</div>
+      </div>
+
+      <div class="quick-item disabled">
+        <div class="qi-title">库存管理</div>
+        <div class="qi-sub">下一步我给你接入</div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
