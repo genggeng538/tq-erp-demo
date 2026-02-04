@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.db import models
 from .models import SalesOrder, WorkOrder, InventoryItem
+from .db_bootstrap import ensure_tables
 
 
 def _company_name():
