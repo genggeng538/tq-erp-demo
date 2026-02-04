@@ -3,6 +3,9 @@ name: Generate Django migrations
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write   # ⭐ 关键：允许 GitHub Actions 推送代码
+
 jobs:
   makemigrations:
     runs-on: ubuntu-latest
