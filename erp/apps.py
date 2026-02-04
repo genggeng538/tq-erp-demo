@@ -8,13 +8,8 @@ class ErpConfig(AppConfig):
     name = "erp"
 
     def ready(self):
-        """
-        方案 A：
-        Django 启动时自动创建超级管理员（只创建一次）
-        """
-
-        # 防止 migrate / collectstatic / shell 等命令时重复执行
-        if "runserver" not in sys.argv and "gunicorn" not in sys.argv:
+        # 只在真正启动 Web 服务时执行
+        if "gunicorn" not in sys.argv:
             return
 
         try:
@@ -36,5 +31,4 @@ class ErpConfig(AppConfig):
                 print(f"ℹ️ 超级管理员已存在：{admin_user}")
 
         except Exception as e:
-            # 任何异常都不影响 Django 启动
             print("⚠️ 自动创建管理员失败（已忽略）：", e)
