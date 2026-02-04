@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-set -o errexit
+set -e
 
+echo "Installing dependencies..."
 pip install -r requirements.txt
 
-python manage.py collectstatic --noinput
+echo "Running Django migrations..."
 python manage.py migrate --noinput
+
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
