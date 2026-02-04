@@ -1,31 +1,95 @@
-<!DOCTYPE html>
+<!-- templates/base.html -->
+{% load static %}
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <title>{{ company_name }}</title>
-  <link rel="stylesheet" href="/static/erp/app.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ company_name|default:"ERP 系统" }}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- 不依赖外部框架，纯 CSS -->
+  <link rel="stylesheet" href="{% static 'erp/app.css' %}?v=1">
 </head>
-<body class="app">
 
-  <aside class="sidebar">
-    <div class="logo">ERP</div>
-    <nav>
-      <a href="/">仪表盘</a>
-      <a href="/admin/" target="_blank">管理后台</a>
-      <a href="/logout/">退出</a>
-    </nav>
-  </aside>
-
-  <main class="main">
+<body>
+  <div class="app">
+    <!-- Topbar -->
     <header class="topbar">
-      <span>{{ company_name }}</span>
-      <span class="user">{{ request.user.username }}</span>
+      <div class="topbar__left">
+        <div class="brand">
+          <div class="brand__logo">ERP</div>
+          <div class="brand__text">
+            <div class="brand__title">{{ company_name|default:"ERP 系统" }}</div>
+            <div class="brand__sub">轻量 · 统一 · 可扩展</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        {% if user.is_authenticated %}
+          <div class="pill">
+            <span class="dot"></span>
+            当前用户：<b>{{ user.username }}</b>
+          </div>
+          <a class="btn btn--ghost" href="/">仪表盘</a>
+          <a class="btn btn--ghost" href="/admin/" target="_blank">后台</a>
+          <a class="btn btn--danger" href="/logout/">退出</a>
+        {% else %}
+          <a class="btn btn--ghost" href="/login/">登录</a>
+        {% endif %}
+      </div>
     </header>
 
-    <section class="content">
-      {% block content %}{% endblock %}
-    </section>
-  </main>
+    <div class="shell">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="nav">
+          <div class="nav__section">总览</div>
+          <a class="nav__item {% if request.path == '/' %}is-active{% endif %}" href="/">
+            <span class="nav__icon">📊</span>
+            <span>仪表盘</span>
+          </a>
 
+          <div class="nav__section">业务</div>
+          <a class="nav__item" href="#">
+            <span class="nav__icon">🧾</span>
+            <span>销售订单</span>
+            <span class="tag">SO</span>
+          </a>
+          <a class="nav__item" href="#">
+            <span class="nav__icon">🏭</span>
+            <span>生产工单</span>
+            <span class="tag">WO</span>
+          </a>
+          <a class="nav__item" href="#">
+            <span class="nav__icon">📦</span>
+            <span>库存管理</span>
+            <span class="tag">INV</span>
+          </a>
+
+          <div class="nav__section">系统</div>
+          <a class="nav__item" href="/admin/" target="_blank">
+            <span class="nav__icon">⚙️</span>
+            <span>管理后台</span>
+          </a>
+        </nav>
+
+        <div class="sidebar__footer">
+          <div class="muted">© ERP · Powered by Django</div>
+          {% if debug %}
+            <div class="debug">DEBUG 开启</div>
+          {% endif %}
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
 </body>
 </html>
