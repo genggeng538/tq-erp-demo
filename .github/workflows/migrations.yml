@@ -6,8 +6,9 @@ on:
 jobs:
   makemigrations:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -15,15 +16,22 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Prepare minimal env
+        run: |
+          echo "DJANGO_SETTINGS_MODULE=settings" >> $GITHUB_ENV
+          echo "SECRET_KEY=dummy" >> $GITHUB_ENV
+          echo "DEBUG=False" >> $GITHUB_ENV
+          echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+          echo "ADMIN_USER=admin" >> $GITHUB_ENV
+          echo "ADMIN_PASSWORD=admin123" >> $GITHUB_ENV
+          echo "ADMIN_EMAIL=admin@example.com" >> $GITHUB_ENV
+
       - name: Make migrations
-        env:
-          DJANGO_SETTINGS_MODULE: settings
-          SECRET_KEY: dummy
         run: |
           python manage.py makemigrations erp
           python manage.py makemigrations
@@ -33,5 +41,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add erp/migrations
-          git commit -m "Add migrations" || echo "No changes"
+          git commit -m "Add Django migrations" || echo "No changes"
           git push
