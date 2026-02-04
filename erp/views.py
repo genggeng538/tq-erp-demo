@@ -3,7 +3,14 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+import os
 
+def _common_ctx(request):
+    return {
+        "company_name": getattr(settings, "COMPANY_NAME", os.environ.get("COMPANY_NAME", "")),
+        "debug": getattr(settings, "DEBUG", False),
+        "admin_user": os.environ.get("ADMIN_USER", "admin"),
+    }
 
 def login_view(request):
     if request.user.is_authenticated:
