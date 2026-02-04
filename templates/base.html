@@ -1,28 +1,52 @@
+{% load static %}
 <!doctype html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>{{ request.site_name|default:"彤奇ERP实验版" }}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}{{ COMPANY_NAME|default:"ERP" }}{% endblock %}</title>
+
+  <!-- 字体：接近 Gemini 的干净风 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'app.css' %}">
 </head>
-<body style="font-family:Arial; margin:24px;">
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h2>常州市彤奇机械有限公司 · ERP 实验版</h2>
-    <div>
-      {% if user.is_authenticated %}
-        你好，{{ user.username }} | <a href="/logout/">退出</a>
-      {% endif %}
-    </div>
+
+<body class="bg">
+  <div class="shell">
+    <!-- 顶部栏 -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">TQ</div>
+        <div class="brand-text">
+          <div class="brand-name">{{ COMPANY_NAME|default:"ERP 系统" }}</div>
+          <div class="brand-sub">轻量 · 统一 · 可扩展</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        {% if request.user.is_authenticated %}
+          <div class="userchip" title="{{ request.user.username }}">
+            <span class="dot"></span>
+            <span class="u">{{ request.user.username }}</span>
+          </div>
+          <a class="btn btn-ghost" href="{% url 'logout' %}">退出</a>
+        {% else %}
+          <a class="btn btn-ghost" href="{% url 'login' %}">登录</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <!-- 主体 -->
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      <span>© {{ COMPANY_NAME|default:"ERP" }} · Powered by Django</span>
+    </footer>
   </div>
-  <hr/>
-  {% if user.is_authenticated %}
-  <div style="margin:12px 0;">
-    <a href="/">仪表盘</a> |
-    <a href="/erp/sales/">销售订单</a> |
-    <a href="/erp/work/">生产工单</a> |
-    <a href="/admin/">系统后台</a>
-  </div>
-  {% endif %}
-  {% block content %}{% endblock %}
 </body>
 </html>
