@@ -1,37 +1,31 @@
-{# templates/base.html #}
-<!doctype html>
-<html lang="zh-cn">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{% block title %}ERP{% endblock %}</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'erp/app.css' %}">
+  <title>{{ company_name }}</title>
+  <link rel="stylesheet" href="/static/erp/app.css">
 </head>
-<body>
-  <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>{{ company_name|default:"ERP 系统" }}</h1>
-          <p>轻量 · 统一 · 可扩展</p>
-        </div>
-      </div>
+<body class="app">
 
-      <div class="userbox">
-        {% if user.is_authenticated %}
-          <span class="badge">当前用户：{{ user.username }}</span>
-          <a class="btn" href="/">仪表盘</a>
-          <a class="btn" href="/admin/" target="_blank">后台</a>
-          <a class="btn danger" href="/logout/">退出</a>
-        {% else %}
-          <a class="btn primary" href="/login/">登录</a>
-        {% endif %}
-      </div>
-    </div>
+  <aside class="sidebar">
+    <div class="logo">ERP</div>
+    <nav>
+      <a href="/">仪表盘</a>
+      <a href="/admin/" target="_blank">管理后台</a>
+      <a href="/logout/">退出</a>
+    </nav>
+  </aside>
 
-    {% block body %}{% endblock %}
-  </div>
+  <main class="main">
+    <header class="topbar">
+      <span>{{ company_name }}</span>
+      <span class="user">{{ request.user.username }}</span>
+    </header>
+
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+
 </body>
 </html>
