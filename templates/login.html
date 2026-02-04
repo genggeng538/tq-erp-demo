@@ -1,10 +1,41 @@
-<!doctype html><html lang="zh"><head><meta charset="utf-8"/><title>登录</title></head>
-<body style="font-family:Arial; margin:24px;">
-  <h2>彤奇ERP实验版 · 登录</h2>
-  {% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
-  <form method="post">{% csrf_token %}
-    <div>账号：<input name="username" value="admin"/></div><br/>
-    <div>密码：<input name="password" type="password" value="123456"/></div><br/>
-    <button type="submit">登录</button>
-  </form>
-</body></html>
+{% extends "base.html" %}
+{% block title %}登录 · {{ COMPANY_NAME|default:"ERP" }}{% endblock %}
+
+{% block content %}
+<div class="center-wrap">
+  <div class="card auth-card">
+    <div class="card-head">
+      <h1>登录</h1>
+      <p>请输入账号密码进入系统</p>
+    </div>
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        账号或密码不正确，请重试。
+      </div>
+    {% endif %}
+
+    <form method="post" class="form">
+      {% csrf_token %}
+      <label class="field">
+        <span>账号</span>
+        <input class="input" type="text" name="username" autocomplete="username" required placeholder="例如：admin" />
+      </label>
+
+      <label class="field">
+        <span>密码</span>
+        <input class="input" type="password" name="password" autocomplete="current-password" required placeholder="请输入密码" />
+      </label>
+
+      <button class="btn btn-primary w100" type="submit">进入系统</button>
+
+      <div class="hint">
+        <span class="pill">提示</span>
+        <span>默认管理员来自环境变量：ADMIN_USER / ADMIN_PASSWORD</span>
+      </div>
+    </form>
+  </div>
+
+  <div class="bg-grid"></div>
+</div>
+{% endblock %}
