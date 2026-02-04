@@ -1,52 +1,37 @@
-{% load static %}
+{# templates/base.html #}
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-cn">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{% block title %}{{ COMPANY_NAME|default:"ERP" }}{% endblock %}</title>
-
-  <!-- 字体：接近 Gemini 的干净风 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <title>{% block title %}ERP{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'erp/app.css' %}">
 </head>
-
-<body class="bg">
-  <div class="shell">
-    <!-- 顶部栏 -->
-    <header class="topbar">
+<body>
+  <div class="container">
+    <div class="topbar">
       <div class="brand">
-        <div class="logo">TQ</div>
-        <div class="brand-text">
-          <div class="brand-name">{{ COMPANY_NAME|default:"ERP 系统" }}</div>
-          <div class="brand-sub">轻量 · 统一 · 可扩展</div>
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>{{ company_name|default:"ERP 系统" }}</h1>
+          <p>轻量 · 统一 · 可扩展</p>
         </div>
       </div>
 
-      <div class="top-actions">
-        {% if request.user.is_authenticated %}
-          <div class="userchip" title="{{ request.user.username }}">
-            <span class="dot"></span>
-            <span class="u">{{ request.user.username }}</span>
-          </div>
-          <a class="btn btn-ghost" href="{% url 'logout' %}">退出</a>
+      <div class="userbox">
+        {% if user.is_authenticated %}
+          <span class="badge">当前用户：{{ user.username }}</span>
+          <a class="btn" href="/">仪表盘</a>
+          <a class="btn" href="/admin/" target="_blank">后台</a>
+          <a class="btn danger" href="/logout/">退出</a>
         {% else %}
-          <a class="btn btn-ghost" href="{% url 'login' %}">登录</a>
+          <a class="btn primary" href="/login/">登录</a>
         {% endif %}
       </div>
-    </header>
+    </div>
 
-    <!-- 主体 -->
-    <main class="main">
-      {% block content %}{% endblock %}
-    </main>
-
-    <footer class="footer">
-      <span>© {{ COMPANY_NAME|default:"ERP" }} · Powered by Django</span>
-    </footer>
+    {% block body %}{% endblock %}
   </div>
 </body>
 </html>
