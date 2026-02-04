@@ -23,7 +23,7 @@ jobs:
 
       - name: Prepare minimal env
         run: |
-          echo "DJANGO_SETTINGS_MODULE=settings" >> $GITHUB_ENV
+          echo "DJANGO_SETTINGS_MODULE=config.settings" >> $GITHUB_ENV
           echo "SECRET_KEY=dummy" >> $GITHUB_ENV
           echo "DEBUG=False" >> $GITHUB_ENV
           echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
