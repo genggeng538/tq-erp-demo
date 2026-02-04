@@ -40,6 +40,8 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
+    ensure_tables()
+
     ctx = {
         "company_name": _company_name(),
         "kpi_today": "-",       # 你后续要真统计我再接数据库
