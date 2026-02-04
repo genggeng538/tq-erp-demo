@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}登录 · ERP{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <div class="hero__left">
+    <h1 class="h1">欢迎回来</h1>
+    <p class="lead">
+      请输入账号密码进入系统。首次部署时，系统会按环境变量自动创建管理员（方案 A）。
+    </p>
+
+    <div class="callout">
+      <div class="callout__title">提示</div>
+      <div class="callout__body">
+        默认管理员来自环境变量：
+        <code>ADMIN_USER</code> / <code>ADMIN_PASSWORD</code> / <code>ADMIN_EMAIL</code><br/>
+        如需更换，修改 Render 环境变量后重新部署即可。
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__right">
+    <div class="card card--glass">
+      <div class="card__header">
+        <div class="card__title">登录</div>
+        <div class="card__subtitle">进入 ERP 工作台</div>
+      </div>
+
+      <form method="post" class="form">
+        {% csrf_token %}
+        <label class="field">
+          <span class="field__label">账号</span>
+          <input class="input" name="username" placeholder="例如：admin" autocomplete="username" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">密码</span>
+          <input class="input" name="password" type="password" placeholder="请输入密码" autocomplete="current-password" required />
+        </label>
+
+        <div class="form__actions">
+          <button class="btn btn--primary" type="submit">进入系统</button>
+          <a class="btn btn--ghost" href="/admin/" target="_blank">打开后台</a>
+        </div>
+
+        <div class="form__hint muted">
+          账号密码错误会提示；若你刚部署完，等 10~30 秒让服务热起来再试一次。
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
