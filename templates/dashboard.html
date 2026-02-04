@@ -1,20 +1,108 @@
+<!-- templates/dashboard.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<h1>仪表盘</h1>
+<div class="page">
+  <div class="page__header">
+    <div>
+      <h1>仪表盘</h1>
+      <p class="muted">系统运行概览（后续我再给你接入真实数据库统计）。</p>
+    </div>
+    <div class="page__actions">
+      <a class="btn btn--ghost" href="/admin/" target="_blank">打开管理后台</a>
+    </div>
+  </div>
 
-<div class="kpi-grid">
-  <div class="kpi">
-    <div class="kpi-title">今日访问</div>
-    <div class="kpi-value">{{ kpi_today }}</div>
+  <div class="grid grid--kpi">
+    <div class="card kpi kpi--a">
+      <div class="kpi__label">今日访问</div>
+      <div class="kpi__value">{{ kpi_today }}</div>
+      <div class="kpi__meta">用于观察活跃度</div>
+    </div>
+
+    <div class="card kpi kpi--b">
+      <div class="kpi__label">订单数</div>
+      <div class="kpi__value">{{ kpi_orders }}</div>
+      <div class="kpi__meta">SalesOrder（待接入）</div>
+    </div>
+
+    <div class="card kpi kpi--c">
+      <div class="kpi__label">工单数</div>
+      <div class="kpi__value">{{ kpi_workorders }}</div>
+      <div class="kpi__meta">WorkOrder（待接入）</div>
+    </div>
+
+    <div class="card kpi kpi--d">
+      <div class="kpi__label">库存预警</div>
+      <div class="kpi__value">{{ kpi_stock_alert }}</div>
+      <div class="kpi__meta">Inventory（待接入）</div>
+    </div>
   </div>
-  <div class="kpi">
-    <div class="kpi-title">订单数</div>
-    <div class="kpi-value">{{ kpi_orders }}</div>
-  </div>
-  <div class="kpi">
-    <div class="kpi-title">工单数</div>
-    <div class="kpi-value">{{ kpi_workorders }}</div>
+
+  <div class="grid grid--2">
+    <div class="card">
+      <div class="card__header">
+        <h3>快速入口</h3>
+        <p class="muted">按制造业 ERP 顺序：先生产、再采购、再库存。</p>
+      </div>
+
+      <div class="quick">
+        <a class="quick__item" href="#">
+          <div class="quick__icon">🧾</div>
+          <div class="quick__text">
+            <div class="quick__title">销售订单</div>
+            <div class="muted">下一步接入 SalesOrder</div>
+          </div>
+        </a>
+
+        <a class="quick__item" href="#">
+          <div class="quick__icon">🏭</div>
+          <div class="quick__text">
+            <div class="quick__title">生产工单</div>
+            <div class="muted">下一步接入 WorkOrder</div>
+          </div>
+        </a>
+
+        <a class="quick__item" href="#">
+          <div class="quick__icon">📦</div>
+          <div class="quick__text">
+            <div class="quick__title">库存管理</div>
+            <div class="muted">物料/成品库存、出入库</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__header">
+        <h3>部署状态</h3>
+        <p class="muted">Render / 数据库 / 静态资源。</p>
+      </div>
+
+      <div class="list">
+        <div class="list__row">
+          <div class="list__k">环境</div>
+          <div class="list__v">Render Web Service</div>
+        </div>
+        <div class="list__row">
+          <div class="list__k">管理员</div>
+          <div class="list__v"><code>{{ admin_user }}</code></div>
+        </div>
+        <div class="list__row">
+          <div class="list__k">数据库</div>
+          <div class="list__v">
+            {% if debug %}开发/本地{% else %}生产/托管{% endif %}
+          </div>
+        </div>
+        <div class="list__row">
+          <div class="list__k">下一步</div>
+          <div class="list__v">接入 SO/WO/INV 表 + KPI 实数</div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <a class="btn btn--primary" href="/admin/" target="_blank">进入 Django Admin</a>
+    </div>
   </div>
 </div>
 {% endblock %}
