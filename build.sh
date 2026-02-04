@@ -4,8 +4,8 @@ set -o errexit
 echo "==> Install dependencies"
 pip install -r requirements.txt
 
-echo "==> Collect static"
-python manage.py collectstatic --noinput
-
-echo "==> Migrate database"
+echo "==> Run database migrations"
 python manage.py migrate --noinput
+
+echo "==> Collect static files"
+python manage.py collectstatic --noinput
