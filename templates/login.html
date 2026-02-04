@@ -1,41 +1,65 @@
+{# templates/login.html #}
 {% extends "base.html" %}
-{% block title %}登录 · {{ COMPANY_NAME|default:"ERP" }}{% endblock %}
+{% block title %}登录 · ERP{% endblock %}
 
-{% block content %}
-<div class="center-wrap">
-  <div class="card auth-card">
-    <div class="card-head">
-      <h1>登录</h1>
-      <p>请输入账号密码进入系统</p>
+{% block body %}
+<div class="formWrap">
+  <div class="loginCard">
+    <div class="loginLeft">
+      <h2>欢迎回来</h2>
+      <p>请输入账号密码进入系统。首次部署时，系统会按环境变量自动创建管理员（方案 A）。</p>
+
+      <div class="pills">
+        <span class="pill">现代化 UI</span>
+        <span class="pill">Render 一键部署</span>
+        <span class="pill">PostgreSQL / SQLite</span>
+        <span class="pill">白噪声静态资源</span>
+      </div>
+
+      <div class="footnote">
+        默认管理员来自环境变量：<br/>
+        <b>ADMIN_USER</b> / <b>ADMIN_PASSWORD</b> / <b>ADMIN_EMAIL</b><br/>
+        如需更换，修改 Render 环境变量后重新部署即可。
+      </div>
     </div>
 
-    {% if form.errors %}
-      <div class="alert alert-danger">
-        账号或密码不正确，请重试。
+    <div class="loginRight">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-size:16px;font-weight:800;letter-spacing:.2px">登录</div>
+          <div style="color:var(--muted);font-size:12px;margin-top:6px">进入仪表盘后可跳转管理后台</div>
+        </div>
+        <div class="badge">/login</div>
       </div>
-    {% endif %}
 
-    <form method="post" class="form">
-      {% csrf_token %}
-      <label class="field">
-        <span>账号</span>
-        <input class="input" type="text" name="username" autocomplete="username" required placeholder="例如：admin" />
-      </label>
+      <div class="hr"></div>
 
-      <label class="field">
-        <span>密码</span>
-        <input class="input" type="password" name="password" autocomplete="current-password" required placeholder="请输入密码" />
-      </label>
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
 
-      <button class="btn btn-primary w100" type="submit">进入系统</button>
+      <form method="post" action="/login/">
+        {% csrf_token %}
+        <div class="field">
+          <label>账号</label>
+          <input name="username" placeholder="例如：admin" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label>密码</label>
+          <input name="password" type="password" placeholder="请输入密码" autocomplete="current-password" required />
+        </div>
 
-      <div class="hint">
-        <span class="pill">提示</span>
-        <span>默认管理员来自环境变量：ADMIN_USER / ADMIN_PASSWORD</span>
-      </div>
-    </form>
+        <div class="actions">
+          <button class="btn primary" type="submit">进入系统</button>
+          <a class="btn" href="/admin/" target="_blank">打开后台</a>
+        </div>
+
+        <div class="footer">
+          <span>提示：可用 <kbd>ADMIN_USER</kbd>/<kbd>ADMIN_PASSWORD</kbd> 登入</span>
+          <span>© ERP · Powered by Django</span>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <div class="bg-grid"></div>
 </div>
 {% endblock %}
