@@ -1,100 +1,20 @@
-{# templates/dashboard.html #}
 {% extends "base.html" %}
-{% block title %}仪表盘 · ERP{% endblock %}
 
-{% block body %}
-<div class="grid">
+{% block content %}
+<h1>仪表盘</h1>
 
-  <div class="card">
-    <div class="hd">
-      <div>
-        <h2>仪表盘</h2>
-        <div class="sub">欢迎回来，{{ user.username }}。这里是系统运行概览。</div>
-      </div>
-      <a class="btn primary" href="/admin/" target="_blank">打开管理后台</a>
-    </div>
-
-    <div class="bd">
-      <div class="kpis">
-        <div class="kpi">
-          <div class="label">今日访问</div>
-          <div class="value">{{ kpi_today|default:"-" }}</div>
-          <div class="hint">后续可接入统计（Render / Nginx / DB）</div>
-        </div>
-        <div class="kpi">
-          <div class="label">订单数</div>
-          <div class="value">{{ kpi_orders|default:"-" }}</div>
-          <div class="hint">后续接 SalesOrder 模块</div>
-        </div>
-        <div class="kpi">
-          <div class="label">库存预警</div>
-          <div class="value">{{ kpi_stock_alert|default:"-" }}</div>
-          <div class="hint">后续接库存模块</div>
-        </div>
-      </div>
-
-      <div class="hr"></div>
-
-      <div style="color:var(--muted);font-size:12px;line-height:1.6">
-        说明：你当前是 Demo 框架版本。下一步我可以给你把：<b>销售订单 → 生产计划 → 工单 → 库存扣减</b> 的主流程骨架直接做出来，
-        并把这些 KPI 真正接到数据库统计上（PostgreSQL）。
-      </div>
-    </div>
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-title">今日访问</div>
+    <div class="kpi-value">{{ kpi_today }}</div>
   </div>
-
-  <div class="card">
-    <div class="hd">
-      <div>
-        <h2>快速入口</h2>
-        <div class="sub">按制造业 ERP 顺序组织：先生产、再采购、再库存。</div>
-      </div>
-      <span class="badge">Quick Links</span>
-    </div>
-
-    <div class="bd">
-      <div class="quick">
-        <a class="tile" href="/admin/" target="_blank">
-          <div class="ico">A</div>
-          <div>
-            <h3>管理后台</h3>
-            <p>用户、数据、表管理（Django Admin）。</p>
-          </div>
-        </a>
-
-        <a class="tile" href="#" onclick="alert('下一步我给你接：SalesOrder');return false;">
-          <div class="ico">SO</div>
-          <div>
-            <h3>销售订单</h3>
-            <p>下一步我给你接入 SalesOrder 模块。</p>
-          </div>
-        </a>
-
-        <a class="tile" href="#" onclick="alert('下一步我给你接：WorkOrder');return false;">
-          <div class="ico">WO</div>
-          <div>
-            <h3>生产工单</h3>
-            <p>从生产计划拆分工单，推进状态流转。</p>
-          </div>
-        </a>
-
-        <a class="tile" href="#" onclick="alert('下一步我给你接：库存模块');return false;">
-          <div class="ico">INV</div>
-          <div>
-            <h3>库存管理</h3>
-            <p>物料/成品库存、预警、出入库记录。</p>
-          </div>
-        </a>
-      </div>
-
-      <div class="hr"></div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="/login/">登录页</a>
-        <a class="btn" href="/">刷新仪表盘</a>
-        <a class="btn danger" href="/logout/">退出</a>
-      </div>
-    </div>
+  <div class="kpi">
+    <div class="kpi-title">订单数</div>
+    <div class="kpi-value">{{ kpi_orders }}</div>
   </div>
-
+  <div class="kpi">
+    <div class="kpi-title">工单数</div>
+    <div class="kpi-value">{{ kpi_workorders }}</div>
+  </div>
 </div>
 {% endblock %}
