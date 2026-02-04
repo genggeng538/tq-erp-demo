@@ -1,34 +1,25 @@
-from django.shortcuts import render
-from django.db import connection
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
 
-def table_exists(table_name: str) -> bool:
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_name = %s
-            );
-            """,
-            [table_name],
-        )
-        return cursor.fetchone()[0]
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect("/")
+        return render(request, "login.html", {"error": "用户名或密码错误"})
+    return render(request, "login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("/login/")
 
 
 @login_required
-def index(request):
-    context = {}
-
-    if table_exists("erp_salesorder"):
-        from .models import SalesOrder
-
-        context["order_count"] = SalesOrder.objects.count()
-    else:
-        # 数据库尚未初始化
-        context["order_count"] = 0
-        context["db_not_ready"] = True
-
-    return render(request, "index.html", context)
+def dashboard(request):
+    return render(request, "dashboard.html")
