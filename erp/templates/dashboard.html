@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}仪表盘 · ERP{% endblock %}
+
+{% block content %}
+<div class="pagehead">
+  <div>
+    <h1 class="h1">仪表盘</h1>
+    <p class="lead">欢迎回来，{{ user.username }}。这里是系统运行概览。</p>
+  </div>
+  <div class="pagehead__actions">
+    <a class="btn btn--ghost" href="/admin/" target="_blank">管理后台</a>
+  </div>
+</div>
+
+<div class="grid grid--3">
+  <div class="card">
+    <div class="card__kpi">
+      <div class="kpi__label">今日访问</div>
+      <div class="kpi__big">{{ kpi_today|default:"—" }}</div>
+    </div>
+    <div class="card__foot muted">后续接入统计</div>
+  </div>
+
+  <div class="card">
+    <div class="card__kpi">
+      <div class="kpi__label">订单数</div>
+      <div class="kpi__big">{{ kpi_orders|default:"—" }}</div>
+    </div>
+    <div class="card__foot muted">后续接入 SalesOrder</div>
+  </div>
+
+  <div class="card">
+    <div class="card__kpi">
+      <div class="kpi__label">工单数</div>
+      <div class="kpi__big">{{ kpi_workorders|default:"—" }}</div>
+    </div>
+    <div class="card__foot muted">后续接入 WorkOrder</div>
+  </div>
+</div>
+
+<div class="grid grid--2">
+  <div class="card">
+    <div class="card__header">
+      <div class="card__title">快速入口</div>
+      <div class="card__subtitle">按制造业 ERP 顺序组织（先生产，再采购，再库存）</div>
+    </div>
+
+    <div class="quick">
+      <a class="quick__item" href="/admin/" target="_blank">
+        <div class="quick__icon">⚙️</div>
+        <div class="quick__meta">
+          <div class="quick__title">用户、数据、表管理</div>
+          <div class="quick__desc muted">Django Admin</div>
+        </div>
+      </a>
+
+      <a class="quick__item" href="#" onclick="return false;">
+        <div class="quick__icon">🧾</div>
+        <div class="quick__meta">
+          <div class="quick__title">销售订单</div>
+          <div class="quick__desc muted">下一步接入 SalesOrder 模块</div>
+        </div>
+        <span class="pill">SO</span>
+      </a>
+
+      <a class="quick__item" href="#" onclick="return false;">
+        <div class="quick__icon">🏭</div>
+        <div class="quick__meta">
+          <div class="quick__title">生产工单</div>
+          <div class="quick__desc muted">从生产计划拆分工单，推进状态流转</div>
+        </div>
+        <span class="pill">WO</span>
+      </a>
+
+      <a class="quick__item" href="#" onclick="return false;">
+        <div class="quick__icon">📦</div>
+        <div class="quick__meta">
+          <div class="quick__title">库存管理</div>
+          <div class="quick__desc muted">物料/成品库存、预警、出入库记录</div>
+        </div>
+        <span class="pill">INV</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="card card--glass">
+    <div class="card__header">
+      <div class="card__title">当前状态</div>
+      <div class="card__subtitle">部署与配置概览</div>
+    </div>
+
+    <div class="list">
+      <div class="list__row">
+        <div class="list__k muted">公司</div>
+        <div class="list__v">{{ company_name|default:"未设置" }}</div>
+      </div>
+      <div class="list__row">
+        <div class="list__k muted">运行环境</div>
+        <div class="list__v">{% if debug %}开发（DEBUG=1）{% else %}生产（DEBUG=0）{% endif %}</div>
+      </div>
+      <div class="list__row">
+        <div class="list__k muted">管理员</div>
+        <div class="list__v">{{ admin_user|default:"ADMIN_USER 未显示" }}</div>
+      </div>
+      <div class="list__row">
+        <div class="list__k muted">下一步</div>
+        <div class="list__v">把 SO → 计划 → WO → 库存 的主流程落到 PostgreSQL</div>
+      </div>
+    </div>
+
+    <div class="card__foot">
+      <a class="btn btn--primary" href="/admin/" target="_blank">进入管理后台</a>
+      <a class="btn btn--ghost" href="/logout/">退出</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
