@@ -1,0 +1,127 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}ERP{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 可选：更好看的字体（加载失败也不影响） -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'erp/app.css' %}?v=2" />
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <div class="bg">
+    <div class="bg__blob bg__blob--a"></div>
+    <div class="bg__blob bg__blob--b"></div>
+    <div class="bg__blob bg__blob--c"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar__inner container">
+      <a class="brand" href="/">
+        <span class="brand__logo">TQ</span>
+        <span class="brand__text">
+          <span class="brand__name">ERP 系统</span>
+          <span class="brand__tagline">轻量 · 统一 · 可扩展</span>
+        </span>
+      </a>
+
+      <div class="topbar__right">
+        {% if user.is_authenticated %}
+          <div class="userchip">
+            <span class="userchip__dot"></span>
+            <span class="userchip__name">{{ user.username }}</span>
+          </div>
+          <a class="btn btn--ghost" href="/admin/" target="_blank">后台</a>
+          <a class="btn btn--ghost" href="/logout/">退出</a>
+        {% else %}
+          <a class="btn btn--ghost" href="/login/">登录</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="container layout">
+    <aside class="sidebar">
+      <div class="panel">
+        <div class="panel__title">导航</div>
+
+        <a class="navitem" href="/">
+          <span class="navitem__icon">🏠</span>
+          <span class="navitem__text">仪表盘</span>
+        </a>
+
+        <div class="navgroup">
+          <div class="navgroup__title">业务模块</div>
+
+          <a class="navitem" href="#" onclick="return false;">
+            <span class="navitem__icon">🧾</span>
+            <span class="navitem__text">销售订单（SO）</span>
+            <span class="pill">下一步接入</span>
+          </a>
+
+          <a class="navitem" href="#" onclick="return false;">
+            <span class="navitem__icon">🏭</span>
+            <span class="navitem__text">生产工单（WO）</span>
+            <span class="pill">下一步接入</span>
+          </a>
+
+          <a class="navitem" href="#" onclick="return false;">
+            <span class="navitem__icon">📦</span>
+            <span class="navitem__text">库存（INV）</span>
+            <span class="pill">下一步接入</span>
+          </a>
+        </div>
+
+        <div class="navgroup">
+          <div class="navgroup__title">系统</div>
+
+          <a class="navitem" href="/admin/" target="_blank">
+            <span class="navitem__icon">⚙️</span>
+            <span class="navitem__text">Django Admin</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="panel panel--muted">
+        <div class="kpi">
+          <div class="kpi__label">公司</div>
+          <div class="kpi__value">{{ company_name|default:"未设置 COMPANY_NAME" }}</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">环境</div>
+          <div class="kpi__value">
+            {% if debug %}DEV{% else %}PROD{% endif %}
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content">
+      {% if messages %}
+        <div class="toastwrap">
+          {% for message in messages %}
+            <div class="toast toast--{{ message.tags|default:'info' }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© ERP • Powered by Django</span>
+      <span class="footer__sep">•</span>
+      <span class="muted">UI: Gemini-ish minimal</span>
+    </div>
+  </footer>
+</body>
+</html>
